@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { generateToken, jwtAuthMiddleware } from "../jwt";
-import { User } from "../models/user.model";
+import { generateToken, jwtAuthMiddleware } from "../jwt.js";
+import { User } from "../models/user.model.js";
 
 
 const router = Router();
