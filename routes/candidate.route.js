@@ -46,10 +46,10 @@ router.put('/:candidateId', async (req, res) => {
         // extract the id from the URL parameter
         const candidateId = req.params.candidateId;
 
-        // updated data for the person
+        // updated data for the candidate
         const updatedCandidateData = req.body;
 
-        const response = await Person.findByIdAndUpdate(candidateId, updatedCandidateData, {
+        const response = await Candidate.findByIdAndUpdate(candidateId, updatedCandidateData, {
             new: true, // return the updated document
             runValidators: true, // run mongoose validation
         })
@@ -76,7 +76,7 @@ router.delete('/:candidateId', async (req, res) => {
 
         const candidateId = req.params.candidateId;
 
-        const response = await Person.findByIdAndDelete(candidateId)
+        const response = await Candidate.findByIdAndDelete(candidateId)
 
         if (!response) {
             return res.status(404).json({ error: "Candidate not found" })
