@@ -17,6 +17,16 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ error: "Admin user already exists" });
         }
 
+        // Validate Aadhar Card Number must have exactly 12 digit
+        if (!/^\d{12}$/.test(data.aadharCardNumber)) {
+            return res.status(400).json({ error: 'Aadhar Card Number must be exactly 12 digits' });
+        }
+
+        // Check if a user with the same Aadhar Card Number already exists
+        const existingUser = await User.findOne({ aadharCardNumber: data.aadharCardNumber });
+        if (existingUser) {
+            return res.status(400).json({ error: 'User with the same Aadhar Card Number already exists' });
+        }
 
         // Create a new User document using the Mongoose Model
         const newUser = new User(data);
@@ -47,6 +57,11 @@ router.post('/login', async (req, res) => {
     try {
         // Extract the aadhar card and password from req body
         const { aadharCardNumber, password } = req.body;
+
+        // Check if aadharCardNumber or password is missing
+        if (!aadharCardNumber || !password) {
+            return res.status(400).json({ error: 'Aadhar Card Number and password are required' });
+        }
 
         // Find the aadharCardNumber in the database
         const user = await User.findOne({ aadharCardNumber: aadharCardNumber });
@@ -93,6 +108,11 @@ router.put('/profile/password', jwtAuthMiddleware, async (req, res) => {
 
         // Extract the current and new password from req body
         const { currentPassword, newPassword } = req.body;
+
+        // Check if currentPassword and newPassword are present in the request body
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: 'Both currentPassword and newPassword are required' });
+        }
 
         // Find the user by userId in the database
         const user = await User.findById(userId);

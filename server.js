@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import userRoutes from "./routes/user.route.js";
 import candidateRoutes from "./routes/candidate.route.js";
 import connectToMongoDB from "./db.js";
-import { jwtAuthMiddleware } from "./jwt.js";
 
 const app = express();
 
@@ -27,7 +26,7 @@ connectToMongoDB()
 
 // Use the routers
 app.use("/user", userRoutes);
-app.use("/candidate", jwtAuthMiddleware, candidateRoutes);
+app.use("/candidate", candidateRoutes);
 
 app.listen(PORT, () => {
     console.log(`Listeing on port ${PORT}`);
