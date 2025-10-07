@@ -6,28 +6,28 @@ import connectToMongoDB from "./db.js";
 
 const app = express();
 
-app.use(bodyParser.json()); // req.body
+app.use(bodyParser.json()); // to enable req.body
 
 const PORT = process.env.PORT || 3000;
 
 connectToMongoDB()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server is running at port : ${PORT}`);
-        });
-
-        app.on("error", (error) => {
-            console.log("Error", error);
-        });
-    })
-    .catch((e) => {
-        console.error("MongoDB connection failed !!!", e);
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server is running at port : ${PORT}`);
     });
+
+    app.on("error", (error) => {
+      console.log("Error", error);
+    });
+  })
+  .catch((e) => {
+    console.error("MongoDB connection failed !!!", e);
+  });
 
 // Use the routers
 app.use("/user", userRoutes);
 app.use("/candidate", candidateRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Listeing on port ${PORT}`);
+  console.log(`Listeing on port ${PORT}`);
 });
